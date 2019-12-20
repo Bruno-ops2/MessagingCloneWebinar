@@ -16,13 +16,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-
         android:layout_marginBottom="4dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Username"
+            android:id="@+id/username"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,9 +1,11 @@
 package com.codingblocks.chatapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,10 +18,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        auth.addAuthStateListener {
+            if(it.currentUser != null){
+                startActivity(Intent(this,ChatActivity::class.java))
+            }
+        }
+
         loginBtn.setOnClickListener {
             auth.createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
                 .addOnSuccessListener {
                     Toast.makeText(this, "Account Created Successfully", Toast.LENGTH_SHORT).show()
+                    val profileUpdate = UserProfileChangeRequest.Builder()
+                        .setDisplayName(username.text.toString())
+                        .build()
+                    it.user?.updateProfile(profileUpdate)
                 }.addOnFailureListener {
                     if (it.localizedMessage.contains("already", true)) {
                         signIn(email.text.toString(), pass.text.toString())
